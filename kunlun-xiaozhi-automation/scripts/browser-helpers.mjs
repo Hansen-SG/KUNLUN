@@ -66,6 +66,8 @@ export async function clickLikelyAuthButtons(page) {
 
 export async function findComposer(page) {
   const selectors = [
+    "textarea[placeholder*='问']",
+    "textarea[placeholder*='输入']",
     "textarea:not([disabled])",
     "[contenteditable='true']",
     "[role='textbox']",
@@ -74,12 +76,24 @@ export async function findComposer(page) {
 
   for (const frame of page.frames()) {
     for (const selector of selectors) {
-      const locator = frame.locator(selector).last();
+      const locator = frame.locator(selector);
       try {
-        await locator.waitFor({ state: "visible", timeout: 10000 });
-        return locator;
+        await locator.first().waitFor({ state: "attached", timeout: 10000 });
       } catch {
         // Continue to the next selector.
+        continue;
+      }
+
+      const count = await locator.count();
+      for (let index = 0; index < count; index += 1) {
+        const candidate = locator.nth(index);
+        try {
+          if (await candidate.isVisible({ timeout: 500 })) {
+            return candidate;
+          }
+        } catch {
+          // Continue to the next candidate.
+        }
       }
     }
   }

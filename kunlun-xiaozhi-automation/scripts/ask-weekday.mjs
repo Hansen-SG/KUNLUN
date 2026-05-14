@@ -4,7 +4,7 @@ import {
   botUrl,
   headless,
   navigationTimeoutMs,
-  question,
+  questions,
   storageStatePath
 } from "./config.mjs";
 import {
@@ -34,13 +34,15 @@ try {
   await page.goto(botUrl, { waitUntil: "domcontentloaded", timeout: navigationTimeoutMs });
   await clickLikelyAuthButtons(page);
 
-  const composer = await findComposer(page);
-  await fillComposer(composer, question);
-  await submitQuestion(page, composer);
-  await page.waitForTimeout(5000);
+  for (const question of questions) {
+    const composer = await findComposer(page);
+    await fillComposer(composer, question);
+    await submitQuestion(page, composer);
+    await page.waitForTimeout(5000);
+    console.log(`已发送问题: ${question}`);
+  }
 
   await context.storageState({ path: storageStatePath });
-  console.log(`已发送问题: ${question}`);
 } catch (error) {
   const artifacts = await saveFailureArtifacts(page, artifactsDir, "failure");
   const title = await page.title().catch(() => "");
