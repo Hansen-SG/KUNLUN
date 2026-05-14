@@ -1,0 +1,26 @@
+name: Kunlun Xiaozhi Daily Question
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub Actions 使用 UTC 时间。这里是每天 01:00 UTC，即北京时间 09:00。
+    - cron: "0 1 * * *"
+
+jobs:
+  ask:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kunlun-xiaozhi-automation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: kunlun-xiaozhi-automation/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run ask
+        env:
+          KUNLUN_STORAGE_STATE_B64: ${{ secrets.KUNLUN_STORAGE_STATE_B64 }}

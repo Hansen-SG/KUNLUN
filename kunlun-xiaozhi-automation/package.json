@@ -1,0 +1,14 @@
+{
+  "name": "kunlun-xiaozhi-automation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "auth": "node scripts/auth-once.mjs",
+    "ask": "node scripts/ask-weekday.mjs",
+    "ask:headed": "HEADLESS=false node scripts/ask-weekday.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.54.2"
+  }
+}
