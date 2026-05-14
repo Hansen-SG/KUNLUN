@@ -43,7 +43,11 @@ try {
   console.log(`已发送问题: ${question}`);
 } catch (error) {
   const artifacts = await saveFailureArtifacts(page, artifactsDir, "failure");
+  const title = await page.title().catch(() => "");
+  const text = await page.locator("body").innerText({ timeout: 3000 }).catch(() => "");
   console.error("发送失败:", error);
+  console.error("当前页面:", { url: page.url(), title });
+  console.error("页面文本片段:", text.replace(/\s+/g, " ").slice(0, 1000));
   console.error("调试文件:", artifacts);
   throw error;
 } finally {

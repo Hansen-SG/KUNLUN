@@ -24,3 +24,9 @@ jobs:
       - run: npm run ask
         env:
           KUNLUN_STORAGE_STATE_GZIP_B64: ${{ secrets.KUNLUN_STORAGE_STATE_GZIP_B64 }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: kunlun-xiaozhi-debug
+          path: kunlun-xiaozhi-automation/artifacts/
+          if-no-files-found: ignore

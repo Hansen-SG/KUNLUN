@@ -72,13 +72,15 @@ export async function findComposer(page) {
     "input:not([type='hidden']):not([type='password']):not([disabled])"
   ];
 
-  for (const selector of selectors) {
-    const locator = page.locator(selector).last();
-    try {
-      await locator.waitFor({ state: "visible", timeout: 10000 });
-      return locator;
-    } catch {
-      // Continue to the next selector.
+  for (const frame of page.frames()) {
+    for (const selector of selectors) {
+      const locator = frame.locator(selector).last();
+      try {
+        await locator.waitFor({ state: "visible", timeout: 10000 });
+        return locator;
+      } catch {
+        // Continue to the next selector.
+      }
     }
   }
 
