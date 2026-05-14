@@ -78,7 +78,7 @@ export async function findComposer(page) {
     for (const selector of selectors) {
       const locator = frame.locator(selector);
       try {
-        await locator.first().waitFor({ state: "attached", timeout: 10000 });
+        await locator.first().waitFor({ state: "attached", timeout: 3000 });
       } catch {
         // Continue to the next selector.
         continue;

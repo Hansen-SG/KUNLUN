@@ -2,6 +2,7 @@ import { chromium } from "playwright";
 import {
   artifactsDir,
   botUrl,
+  directChatUrl,
   headless,
   navigationTimeoutMs,
   questions,
@@ -33,6 +34,16 @@ page.setDefaultTimeout(navigationTimeoutMs);
 try {
   await page.goto(botUrl, { waitUntil: "domcontentloaded", timeout: navigationTimeoutMs });
   await clickLikelyAuthButtons(page);
+
+  try {
+    await findComposer(page);
+  } catch {
+    const bodyText = await page.locator("body").innerText({ timeout: 3000 }).catch(() => "");
+    if (page.url().includes("/jump") || bodyText.includes("跳转中")) {
+      await page.goto(directChatUrl, { waitUntil: "domcontentloaded", timeout: navigationTimeoutMs });
+      await clickLikelyAuthButtons(page);
+    }
+  }
 
   for (const question of questions) {
     const composer = await findComposer(page);

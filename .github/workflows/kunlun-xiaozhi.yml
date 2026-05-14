@@ -3,8 +3,9 @@ name: Kunlun Xiaozhi Daily Question
 on:
   workflow_dispatch:
   schedule:
-    # GitHub Actions 使用 UTC 时间。这里是每天 01:00 UTC，即北京时间 09:00。
-    - cron: "0 1 * * *"
+    # GitHub Actions 使用 UTC 时间。这里是每天 01:00、04:00、09:00 UTC，
+    # 即北京时间 09:00、12:00、17:00。
+    - cron: "0 1,4,9 * * *"
 
 jobs:
   ask:

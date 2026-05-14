@@ -8,9 +8,13 @@ export const botUrl =
   process.env.KUNLUN_BOT_URL ||
   "https://xz.klszkj.com:9000/botapi/jump?lang=zh-CN&open_in_browser=true&convId=01KRJPFNYYDFNNB7K6R2P9EAJF&redirect=/v4/chat/0OMP0NFfygLyc9Nr6qvsV-";
 
+export const directChatUrl =
+  process.env.KUNLUN_DIRECT_CHAT_URL ||
+  "https://xz.klszkj.com:9000/botapi/v4/chat/0OMP0NFfygLyc9Nr6qvsV-?lang=zh-CN&open_in_browser=true&convId=01KRJPFNYYDFNNB7K6R2P9EAJF";
+
 export const questions = process.env.KUNLUN_QUESTIONS
   ? process.env.KUNLUN_QUESTIONS.split(/\r?\n/).map((item) => item.trim()).filter(Boolean)
-  : [process.env.KUNLUN_QUESTION || "今天是星期几。", "你好"];
+  : [process.env.KUNLUN_QUESTION || "今天是星期几。", "你好", "现在是几点？"];
 
 export const storageStatePath =
   process.env.KUNLUN_STORAGE_STATE_PATH ||

@@ -3,7 +3,7 @@
 这个目录提供两段 Playwright 自动化：
 
 - `npm run auth`: 第一次手动完成昆仑智联授权，并保存浏览器登录态。
-- `npm run ask`: 使用已保存的登录态访问昆仑小智，依次发送“今天是星期几。”和“你好”。
+- `npm run ask`: 使用已保存的登录态访问昆仑小智，依次发送“今天是星期几。”、“你好”和“现在是几点？”。
 
 ## 本地第一次授权
 
@@ -64,6 +64,7 @@ npm run ask
 - `KUNLUN_BOT_URL`: 覆盖访问地址。
 - `KUNLUN_QUESTION`: 覆盖第一个发送内容，默认是 `今天是星期几。`
 - `KUNLUN_QUESTIONS`: 覆盖完整问题列表，每行一个问题。
+- `KUNLUN_DIRECT_CHAT_URL`: 覆盖 jump 页面卡住时使用的直达聊天页地址。
 - `KUNLUN_STORAGE_STATE_GZIP_B64`: 云端登录态，gzip 压缩后再 base64 编码的 `auth/storage-state.json`。
 - `KUNLUN_STORAGE_STATE_B64`: 未压缩的登录态，保留给较小登录态使用。
 - `HEADLESS`: 默认 `true`，设为 `false` 时显示浏览器。
