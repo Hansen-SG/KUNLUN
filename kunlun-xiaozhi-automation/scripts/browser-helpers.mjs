@@ -1,16 +1,20 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { gunzipSync } from "node:zlib";
 
 export async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true });
 }
 
 export async function applyStorageSecret(storageStatePath) {
-  const encoded = process.env.KUNLUN_STORAGE_STATE_B64;
-  if (!encoded) return false;
+  const gzipEncoded = process.env.KUNLUN_STORAGE_STATE_GZIP_B64;
+  const plainEncoded = process.env.KUNLUN_STORAGE_STATE_B64;
+  if (!gzipEncoded && !plainEncoded) return false;
 
   await ensureDir(path.dirname(storageStatePath));
-  const json = Buffer.from(encoded, "base64").toString("utf8");
+  const json = gzipEncoded
+    ? gunzipSync(Buffer.from(gzipEncoded, "base64")).toString("utf8")
+    : Buffer.from(plainEncoded, "base64").toString("utf8");
   JSON.parse(json);
   await fs.writeFile(storageStatePath, json, "utf8");
   return true;

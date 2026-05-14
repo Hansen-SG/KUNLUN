@@ -41,10 +41,15 @@ $env:HEADLESS="false"; npm run ask
 云端推荐用 Secret 保存登录态：
 
 ```powershell
-[Convert]::ToBase64String([IO.File]::ReadAllBytes("auth/storage-state.json"))
+$bytes = [IO.File]::ReadAllBytes("auth/storage-state.json")
+$ms = New-Object IO.MemoryStream
+$gzip = New-Object IO.Compression.GzipStream($ms, [IO.Compression.CompressionLevel]::Optimal)
+$gzip.Write($bytes, 0, $bytes.Length)
+$gzip.Close()
+[Convert]::ToBase64String($ms.ToArray())
 ```
 
-把输出保存为云端 Secret：`KUNLUN_STORAGE_STATE_B64`。
+把输出保存为云端 Secret：`KUNLUN_STORAGE_STATE_GZIP_B64`。
 
 云端执行命令：
 
@@ -58,5 +63,6 @@ npm run ask
 
 - `KUNLUN_BOT_URL`: 覆盖访问地址。
 - `KUNLUN_QUESTION`: 覆盖发送内容，默认是 `今天是星期几。`
-- `KUNLUN_STORAGE_STATE_B64`: 云端登录态，base64 编码的 `auth/storage-state.json`。
+- `KUNLUN_STORAGE_STATE_GZIP_B64`: 云端登录态，gzip 压缩后再 base64 编码的 `auth/storage-state.json`。
+- `KUNLUN_STORAGE_STATE_B64`: 未压缩的登录态，保留给较小登录态使用。
 - `HEADLESS`: 默认 `true`，设为 `false` 时显示浏览器。

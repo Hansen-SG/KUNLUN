@@ -23,4 +23,4 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run ask
         env:
-          KUNLUN_STORAGE_STATE_B64: ${{ secrets.KUNLUN_STORAGE_STATE_B64 }}
+          KUNLUN_STORAGE_STATE_GZIP_B64: ${{ secrets.KUNLUN_STORAGE_STATE_GZIP_B64 }}
